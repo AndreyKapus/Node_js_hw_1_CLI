@@ -18,10 +18,9 @@ async function listContacts() {
 
 async function getContactById(contactId) {
   try {
-    let findContact;
     const allContacts = await listContacts();
-    findContact = await allContacts.filter(
-      (currentContact) => currentContact.id === contactId
+    const findContact = await allContacts.filter(
+      (currentContact) => Number(currentContact.id) === contactId
     );
     console.log(findContact);
     return findContact;
@@ -32,13 +31,11 @@ async function getContactById(contactId) {
 
 async function removeContact(contactId) {
   try {
-    let newListAfterRemove;
+    let removedList;
     const allContacts = await listContacts();
-    newListAfterRemove = allContacts.filter(
-      (currentContact) => currentContact.id !== contactId
-    );
-    await fs.writeFile(contactsPath, JSON.stringify(newListAfterRemove));
-    console.table(newListAfterRemove);
+    removedList = allContacts.filter((contact) => contact.id !== contactId);
+    await fs.writeFile(contactsPath, JSON.stringify(removedList));
+    console.table(removedList);
   } catch (error) {
     console.log(error);
   }
@@ -46,16 +43,16 @@ async function removeContact(contactId) {
 
 async function addContact(name, email, phone) {
   try {
-    const allContacts = await listContacts();
+    const contacts = await listContacts();
     let newContact = {
       id: shortid.generate(),
       name: name,
       email: email,
       phone: phone,
     };
-    allContacts.push(newContact);
-    await fs.writeFile(contactsPath, JSON.stringify(allContacts));
-    console.table(allContacts);
+    contacts.push(newContact);
+    await fs.writeFile(contactsPath, JSON.stringify(contacts));
+    console.table(contacts);
   } catch (error) {
     console.log(error);
   }

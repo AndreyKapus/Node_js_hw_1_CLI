@@ -9,6 +9,7 @@ function invokeAction({ action, id, name, email, phone }) {
 
     case "get":
       contacts.getContactById(id);
+      console.log(`contact with id ${id}:`);
       break;
 
     case "add":
